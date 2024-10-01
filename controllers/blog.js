@@ -3,8 +3,8 @@ const blog = require("../models/blogModel");
 
 exports.createBlog = async (req, res) => {
     try {
-        const {user_id, image,firebaseImageUrl,title, body, author } = req.body;
-        const response = await blog.create({user_id, image,firebaseImageUrl, title, body, author });
+        const { user_id, firebaseImageUrl, title, body, author } = req.body;
+        const response = await blog.create({ user_id, firebaseImageUrl, title, body, author });
         res.status(200).json(
             {
                 success: true,
@@ -53,7 +53,7 @@ exports.getBlog = async (req, res) => {
 }
 
 
-exports. getBlogByid = async (req, res) => {
+exports.getBlogByid = async (req, res) => {
     try {
         //extract todo items basis on id
         const id = req.params.id;
@@ -80,13 +80,14 @@ exports. getBlogByid = async (req, res) => {
 // update blog
 
 exports.updateBlog = async (req, res) => {
+
     try {
         const { id } = req.params;
-        const { image, title, body, author } = req.body;
-
+        const { firebaseImageUrl, title, body } = req.body;
         const blogs = await blog.findByIdAndUpdate(
             { _id: id },
-            { image, title, body, author },
+            { firebaseImageUrl, title, body },
+            { new: true }
         )
 
         res.status(200).json({
